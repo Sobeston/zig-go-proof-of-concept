@@ -1,10 +1,7 @@
 const std = @import("std");
-const warn = std.debug.warn;
 usingnamespace std.os.windows;
 
-extern "kernel32" fn LoadLibraryA(
-    lpLibFileName: [*:0]const u8
-) callconv(.Stdcall) ?HMODULE;
+extern "kernel32" fn LoadLibraryA(lpLibFileName: [*:0]const u8) callconv(.Stdcall) ?HMODULE;
 
 pub fn main() !void {
     const new_module = LoadLibraryA("main.dll") orelse
@@ -14,17 +11,11 @@ pub fn main() !void {
         return error.ProcNotFound;
 
     const myXKCD = @ptrCast(
-        fn(i64) extern struct {
-            title: [*:0]const u8,
-            url: [*:0]const u8,
-            success: bool
-        },
+        fn(i64) extern struct {title: [*:0]const u8, url: [*:0]const u8},
         num_proc
     )(600);
 
-    if (!myXKCD.success) return error.GoFuncFailed;
-
-    warn("title: {}, url: {}\n", .{
+    std.debug.warn("title: {}, url: {}\n", .{
         std.mem.toSliceConst(u8, myXKCD.title),
         std.mem.toSliceConst(u8, myXKCD.url)
     });
