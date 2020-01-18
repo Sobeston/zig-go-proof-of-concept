@@ -1,6 +1,8 @@
 const std = @import("std");
 usingnamespace std.os.windows;
+
 extern "kernel32" fn LoadLibraryA(lpLibFileName: [*:0]const u8) callconv(.Stdcall) ?HMODULE;
+
 pub fn main() !void {
     const getXKCD = @ptrCast(
         fn(i64) extern struct {title: [*:0]const u8, url: [*:0]const u8},
