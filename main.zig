@@ -14,7 +14,7 @@ pub fn main() !void {
         return error.ProcNotFound;
 
     const myXKCD = @ptrCast(
-        fn(i64) struct {
+        fn(i64) extern struct {
             title: [*:0]const u8,
             url: [*:0]const u8,
             success: bool
