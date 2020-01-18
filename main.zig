@@ -7,11 +7,11 @@ extern "kernel32" fn LoadLibraryA(
 ) callconv(.Stdcall) ?HMODULE;
 
 pub fn main() !void {
-    const new_module = LoadLibraryA("main.dll");
-    if (new_module == null) return error.LoadLibraryAFailure;
+    const new_module = LoadLibraryA("main.dll") orelse
+        return error.LoadLibraryAFailure;
 
-    const num_proc = kernel32.GetProcAddress(new_module.?, "GetXKCD");
-    if (num_proc == null) return error.ProcNotFound;
+    const num_proc = kernel32.GetProcAddress(new_module, "GetXKCD") orelse
+        return error.ProcNotFound;
 
     const myXKCD = @ptrCast(
         fn(i64) struct {
