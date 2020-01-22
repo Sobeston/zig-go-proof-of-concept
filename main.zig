@@ -13,9 +13,7 @@ pub fn main() !void {
     );
 
     const my_xkcd = getXKCD(100);
-
-    std.debug.warn("title: {}, url: {}\n", .{
-        std.mem.toSliceConst(u8, my_xkcd.title),
-        std.mem.toSliceConst(u8, my_xkcd.url)
-    });
+    
+    const stdout = &std.io.getStdOut().outStream().stream;
+    try stdout.print("title: {s}, url: {s}\n", .{my_xkcd.title, my_xkcd.url});
 }
